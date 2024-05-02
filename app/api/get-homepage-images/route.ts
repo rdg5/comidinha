@@ -9,10 +9,10 @@ const s3 = new S3({
   },
 })
 
-export async function GET() {
-  const bucketName = process.env.AWS_BUCKET_NAME
+const bucketName = process.env.AWS_BUCKET_NAME
+
+export const GET = async () => {
   if (!bucketName) {
-    console.error('S3 Bucket name is undefined.')
     return NextResponse.json(
       {
         error: 'Server configuration error',
@@ -27,23 +27,40 @@ export async function GET() {
       .listObjectsV2({ Bucket: bucketName })
       .promise()
 
-    if (!Contents || Contents.length === 0) {
-      return NextResponse.json({ error: 'No images found' }, { status: 404 })
+    if (!Contents || Contents.length < 5) {
+      return NextResponse.json(
+        { error: 'Not enough images in the bucket' },
+        { status: 404 },
+      )
     }
 
-    let imageUrls = []
-    for (let i = 0; i < 5; i++) {
+    const uniqueKeys = new Set()
+    const imageUrls = []
+    while (uniqueKeys.size < 5 && uniqueKeys.size < Contents.length) {
       const randomIndex = Math.floor(Math.random() * Contents.length)
-      const randomImageKey = Contents[randomIndex].Key
-      const imageUrl = s3.getSignedUrl('getObject', {
-        Bucket: bucketName,
-        Key: randomImageKey,
-        Expires: 60,
-      })
-      imageUrls.push(imageUrl)
+      const object = Contents[randomIndex]
+
+      if (!uniqueKeys.has(object.Key)) {
+        uniqueKeys.add(object.Key)
+        const imageUrl = s3.getSignedUrl('getObject', {
+          Bucket: bucketName,
+          Key: object.Key,
+          Expires: 60, // URL valid for 60 seconds
+        })
+        imageUrls.push(imageUrl)
+      }
     }
 
-    return NextResponse.json({ imageUrls })
+    if (imageUrls.length < 5) {
+      return NextResponse.json(
+        { error: 'Could not find enough unique images' },
+        { status: 404 },
+      )
+    }
+
+    const response = NextResponse.json({ imageUrls })
+    response.headers.set('Link', `<${imageUrls[0]}>; rel=preload; as=image`)
+    return response
   } catch (error) {
     console.error('Error fetching images:', error)
     return NextResponse.json(

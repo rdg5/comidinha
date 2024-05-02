@@ -1,38 +1,61 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
-export default function DashboardPage() {
-  const [imageUrl, setImageUrl] = useState<string>('')
-
-  const fetchRandomImage = async () => {
-    try {
-      const response = await fetch('/api/image')
-      const data = await response.json()
-      setImageUrl(data.imageUrl)
-    } catch (error) {
-      console.error('Failed to fetch image:', error)
-    }
-  }
+export default function HomePage() {
+  const [images, setImages] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const containerRef = useRef(null)
 
   useEffect(() => {
-    fetchRandomImage()
+    fetch('/api/get-multiple-images')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.imageUrls && data.imageUrls.length) {
+          setImages(data.imageUrls)
+        }
+      })
+      .catch((err) => console.error('Error fetching images:', err))
   }, [])
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault()
+        const newIndex = currentIndex + (event.key === 'ArrowDown' ? 1 : -1)
+
+        if (newIndex >= 0 && newIndex < images.length) {
+          setCurrentIndex(newIndex)
+          containerRef.current.children[newIndex].scrollIntoView({
+            behavior: 'smooth',
+          })
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [currentIndex, images.length])
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="mb-4">
-        {imageUrl ? (
+    <div
+      ref={containerRef}
+      className="h-screen overflow-y-scroll snap-y snap-mandatory"
+    >
+      {images.map((src, index) => (
+        <div
+          key={index}
+          className="h-screen snap-start flex justify-center items-center"
+        >
           <img
-            src={imageUrl}
-            alt="Random"
-            className="max-w-full h-auto rounded-md shadow-lg"
-          ></img>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div>
-      <button onClick={fetchRandomImage}>Refresh Image</button>
+            src={src}
+            alt={`Image ${index + 1}`}
+            className="w-1/4 max-h-1/4 object-contain"
+          />
+        </div>
+      ))}
     </div>
   )
 }
