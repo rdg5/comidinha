@@ -1,10 +1,10 @@
 'use client'
-
 import React, { useState, useEffect, useRef } from 'react'
+import Sidebar from './components/Sidebar'
 
 export default function HomePage() {
   const [images, setImages] = useState([])
-  const containerRef = useRef(null)
+  const imageContainerRef = useRef(null)
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -27,7 +27,7 @@ export default function HomePage() {
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         event.preventDefault()
-        const { current } = containerRef
+        const { current } = imageContainerRef
         if (current) {
           const currentIndex = Math.round(
             current.scrollTop / window.innerHeight,
@@ -48,22 +48,25 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div
-      ref={containerRef}
-      className="h-screen overflow-y-scroll snap-y snap-mandatory"
-    >
-      {images.map((src, index) => (
-        <div
-          key={index}
-          className="h-screen snap-start flex justify-center items-center"
-        >
-          <img
-            src={src}
-            alt={`Image ${index + 1}`}
-            className="w-1/4 max-h-1/4 object-contain"
-          />
-        </div>
-      ))}
+    <div className="flex h-screen">
+      <div
+        ref={imageContainerRef}
+        className="flex-1 overflow-y-scroll snap-y snap-mandatory"
+      >
+        {images.map((src, index) => (
+          <div
+            key={index}
+            className="h-screen snap-start flex justify-center items-center"
+          >
+            <img
+              src={src}
+              alt={`Image ${index + 1}`}
+              className="w-1/4 max-h-1/4 object-contain"
+            />
+          </div>
+        ))}
+      </div>
+      <Sidebar />
     </div>
   )
 }

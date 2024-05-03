@@ -1,61 +1,57 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function HomePage() {
-  const [images, setImages] = useState([])
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const containerRef = useRef(null)
+export default function Dashboard() {
+  const [imageUrl, setImageUrl] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetch('/api/get-multiple-images')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.imageUrls && data.imageUrls.length) {
-          setImages(data.imageUrls)
-        }
-      })
-      .catch((err) => console.error('Error fetching images:', err))
+    fetchRandomImage() // Fetch the initial image when the component mounts
   }, [])
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-        event.preventDefault()
-        const newIndex = currentIndex + (event.key === 'ArrowDown' ? 1 : -1)
-
-        if (newIndex >= 0 && newIndex < images.length) {
-          setCurrentIndex(newIndex)
-          containerRef.current.children[newIndex].scrollIntoView({
-            behavior: 'smooth',
-          })
+  const fetchRandomImage = () => {
+    setLoading(true) // Start loading state
+    fetch('/api/get-homepage-images') // API endpoint that returns a single random image URL
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.imageUrl) {
+          setImageUrl(data.imageUrl)
+        } else {
+          console.error('No image URL found:', data)
         }
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [currentIndex, images.length])
+        setLoading(false) // End loading state
+      })
+      .catch((err) => {
+        console.error('Error fetching image:', err)
+        setLoading(false) // Ensure loading state is cleared on error
+      })
+  }
 
   return (
-    <div
-      ref={containerRef}
-      className="h-screen overflow-y-scroll snap-y snap-mandatory"
-    >
-      {images.map((src, index) => (
-        <div
-          key={index}
-          className="h-screen snap-start flex justify-center items-center"
-        >
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="relative w-full h-full">
+        {imageUrl ? (
           <img
-            src={src}
-            alt={`Image ${index + 1}`}
-            className="w-1/4 max-h-1/4 object-contain"
+            src={imageUrl}
+            alt="Random Image"
+            className="object-cover w-full h-full transition-opacity duration-500"
           />
-        </div>
-      ))}
+        ) : loading ? (
+          <p className="text-center">Loading...</p>
+        ) : (
+          <p className="text-center">Click "Next Image" to load an image.</p>
+        )}
+      </div>
+      <div className="absolute bottom-10">
+        <button
+          className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded"
+          onClick={fetchRandomImage}
+          disabled={loading}
+        >
+          Next Image
+        </button>
+      </div>
     </div>
   )
 }
