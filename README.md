@@ -5,5 +5,5 @@ ToDos:
 - [x] Dashboard
 - [ ] Optimizing image preloading
 - [ ] Uploading pictures
-- [ ] Authentication
+- [x] Authentication
 - [ ] Testing
