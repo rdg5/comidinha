@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Sidebar from './components/Sidebar'
 import { useUser } from '@clerk/nextjs'
+import { RemoveScrollBar } from 'react-remove-scroll-bar'
 
 export default function HomePage() {
   const [images, setImages] = useState([])
@@ -55,12 +56,12 @@ export default function HomePage() {
     <div className="flex h-screen bg-green-900">
       <div
         ref={imageContainerRef}
-        className="flex-1 overflow-y-scroll snap-y snap-mandatory bg-green-200 p-2 border-2 border-green-600 shadow-lg"
+        className="flex-1 overflow-y-scroll snap-y snap-mandatory bg-green-200 p-2 shadow-lg"
       >
         {images.map((src, index) => (
           <div
             key={index}
-            className="h-screen snap-start flex justify-center items-center bg-green-100 p-4 border border-green-200 shadow"
+            className="h-screen snap-start flex justify-center items-center bg-green-100 p-4  shadow"
           >
             <img
               src={src}
@@ -71,6 +72,7 @@ export default function HomePage() {
         ))}
       </div>
       <Sidebar href={href} />
+      <RemoveScrollBar />
     </div>
   )
 }

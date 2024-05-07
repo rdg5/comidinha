@@ -3,7 +3,8 @@ ToDos:
 - [x] Setup project
 - [x] Setup s3 fetch
 - [x] Dashboard
+- [x] Authentication
 - [ ] Optimizing image preloading
 - [ ] Uploading pictures
-- [x] Authentication
+- [ ] Hide scrollbar between body and sidebar
 - [ ] Testing

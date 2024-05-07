@@ -1,15 +1,19 @@
-import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@clerk/nextjs'
 import Link from 'next/link'
 
 const Sidebar = ({ href }) => {
-  const user = useUser()
+  const user = useAuth()
   console.log(user)
 
   return (
-    <div className="w-1/5 h-screen bg-gray-800 text-white p-5 flex flex-col justify-between">
+    <div className="w-1/5 h-screen bg-green-100 text-white p-5 flex flex-col justify-between">
       <div>
-        <h1 className="text-xl font-bold mb-2">comidinha</h1>
-        <p>Welcome to comidinha. Show us your lunch today</p>
+        <h1 className="text-xl font-bold font-mono mb-2 text-black">
+          comidinha
+        </h1>
+        <p className="text-black font-mono">
+          Welcome to comidinha. Show us your lunch today
+        </p>
       </div>
       <div>
         <Link href={href}>

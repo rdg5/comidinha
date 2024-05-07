@@ -4,6 +4,11 @@
 
 @layer base {
   body {
-    @apply bg-green-700;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
   }
 }
