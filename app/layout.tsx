@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
-import { RemoveScrollBar } from 'react-remove-scroll-bar'
 
 const inter = Inter({ subsets: ['latin'] })
 

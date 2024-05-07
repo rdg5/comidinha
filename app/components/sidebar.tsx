@@ -2,8 +2,7 @@ import { useAuth } from '@clerk/nextjs'
 import Link from 'next/link'
 
 const Sidebar = ({ href }) => {
-  const user = useAuth()
-  console.log(user)
+  const { isSignedIn } = useAuth()
 
   return (
     <div className="w-1/5 h-screen bg-green-100 text-white p-5 flex flex-col justify-between">
@@ -16,11 +15,19 @@ const Sidebar = ({ href }) => {
         </p>
       </div>
       <div>
-        <Link href={href}>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1">
-            Vamos
-          </button>
-        </Link>
+        {isSignedIn ? (
+          <Link href={href}>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1">
+              Upload
+            </button>
+          </Link>
+        ) : (
+          <Link href={href}>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1">
+              Vamos
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   )
