@@ -1,4 +1,10 @@
-const Sidebar = () => {
+import { useUser } from '@clerk/nextjs'
+import Link from 'next/link'
+
+const Sidebar = ({ href }) => {
+  const user = useUser()
+  console.log(user)
+
   return (
     <div className="w-1/5 h-screen bg-gray-800 text-white p-5 flex flex-col justify-between">
       <div>
@@ -6,12 +12,11 @@ const Sidebar = () => {
         <p>Welcome to comidinha. Show us your lunch today</p>
       </div>
       <div>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1">
-          Sign in with Email
-        </button>
-        <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 w-full">
-          Sign in with Google
-        </button>
+        <Link href={href}>
+          <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1">
+            Vamos
+          </button>
+        </Link>
       </div>
     </div>
   )

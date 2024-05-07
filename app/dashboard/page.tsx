@@ -1,57 +1,76 @@
 'use client'
+import React, { useState, useEffect, useRef } from 'react'
+import Sidebar from '../components/Sidebar'
+import { useUser } from '@clerk/nextjs'
 
-import React, { useState, useEffect } from 'react'
+export default function HomePage() {
+  const [images, setImages] = useState([])
+  const imageContainerRef = useRef(null)
 
-export default function Dashboard() {
-  const [imageUrl, setImageUrl] = useState('')
-  const [loading, setLoading] = useState(false)
+  const { user } = useUser()
+  const href = user ? '/dashboard' : '/sign-up'
 
   useEffect(() => {
-    fetchRandomImage() // Fetch the initial image when the component mounts
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/get-homepage-images')
+        const data = await response.json()
+        if (data.imageUrls && data.imageUrls.length) {
+          setImages(data.imageUrls)
+        } else {
+          console.error('No images found or invalid response:', data)
+        }
+      } catch (error) {
+        console.error('Error fetching images:', error)
+      }
+    }
+    fetchImages()
   }, [])
 
-  const fetchRandomImage = () => {
-    setLoading(true) // Start loading state
-    fetch('/api/get-homepage-images') // API endpoint that returns a single random image URL
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.imageUrl) {
-          setImageUrl(data.imageUrl)
-        } else {
-          console.error('No image URL found:', data)
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault()
+        const { current } = imageContainerRef
+        if (current) {
+          const currentIndex = Math.round(
+            current.scrollTop / window.innerHeight,
+          )
+          const nextIndex = currentIndex + (event.key === 'ArrowDown' ? 1 : -1)
+          const nextElement = current.children[nextIndex]
+          if (nextElement) {
+            nextElement.scrollIntoView({ behavior: 'smooth' })
+          }
         }
-        setLoading(false) // End loading state
-      })
-      .catch((err) => {
-        console.error('Error fetching image:', err)
-        setLoading(false) // Ensure loading state is cleared on error
-      })
-  }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="relative w-full h-full">
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="Random Image"
-            className="object-cover w-full h-full transition-opacity duration-500"
-          />
-        ) : loading ? (
-          <p className="text-center">Loading...</p>
-        ) : (
-          <p className="text-center">Click "Next Image" to load an image.</p>
-        )}
+    <div className="flex h-screen bg-green-900">
+      <div
+        ref={imageContainerRef}
+        className="flex-1 overflow-y-scroll snap-y snap-mandatory bg-green-200 p-2 border-2 border-green-600 shadow-lg"
+      >
+        {images.map((src, index) => (
+          <div
+            key={index}
+            className="h-screen snap-start flex justify-center items-center bg-green-100 p-4 border border-green-200 shadow"
+          >
+            <img
+              src={src}
+              alt={`Image ${index + 1}`}
+              className="w-1/4 max-h-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+            />
+          </div>
+        ))}
       </div>
-      <div className="absolute bottom-10">
-        <button
-          className="text-white bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 rounded"
-          onClick={fetchRandomImage}
-          disabled={loading}
-        >
-          Next Image
-        </button>
-      </div>
+      <Sidebar href={href} />
     </div>
   )
 }

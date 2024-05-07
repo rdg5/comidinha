@@ -1,10 +1,14 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import Sidebar from './components/Sidebar'
+import { useUser } from '@clerk/nextjs'
 
 export default function HomePage() {
   const [images, setImages] = useState([])
   const imageContainerRef = useRef(null)
+
+  const { user } = useUser()
+  const href = user ? '/dashboard' : '/sign-up'
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -48,25 +52,25 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-green-900">
       <div
         ref={imageContainerRef}
-        className="flex-1 overflow-y-scroll snap-y snap-mandatory"
+        className="flex-1 overflow-y-scroll snap-y snap-mandatory bg-green-200 p-2 border-2 border-green-600 shadow-lg"
       >
         {images.map((src, index) => (
           <div
             key={index}
-            className="h-screen snap-start flex justify-center items-center"
+            className="h-screen snap-start flex justify-center items-center bg-green-100 p-4 border border-green-200 shadow"
           >
             <img
               src={src}
               alt={`Image ${index + 1}`}
-              className="w-1/4 max-h-1/4 object-contain"
+              className="w-1/4 max-h-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
             />
           </div>
         ))}
       </div>
-      <Sidebar />
+      <Sidebar href={href} />
     </div>
   )
 }
