@@ -2,14 +2,14 @@ import { S3 } from 'aws-sdk'
 import { NextResponse } from 'next/server'
 
 const s3 = new S3({
-  region: process.env.AWS_REGION,
+  region: process.env.AWS_REGION as string,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
   },
 })
 
-const bucketName = process.env.AWS_BUCKET_NAME
+const bucketName = process.env.AWS_BUCKET_NAME as string
 
 export const GET = async () => {
   if (!bucketName) {
@@ -64,7 +64,7 @@ export const GET = async () => {
   } catch (error) {
     console.error('Error fetching images:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch images', details: error.message },
+      { error: 'Failed to fetch images' },
       { status: 500 },
     )
   }

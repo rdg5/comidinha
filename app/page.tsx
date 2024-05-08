@@ -1,8 +1,8 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
-import Sidebar from './components/Sidebar'
 import { useUser } from '@clerk/nextjs'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
+import Sidebar from './components/sidebar'
 
 export default function HomePage() {
   const [images, setImages] = useState([])

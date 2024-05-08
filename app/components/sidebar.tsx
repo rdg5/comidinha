@@ -1,7 +1,12 @@
 import { useAuth } from '@clerk/nextjs'
 import Link from 'next/link'
 
-const Sidebar = ({ href }) => {
+interface User {
+  href: string
+}
+
+const Sidebar = ({ href }: User['href']) => {
+  console.log(typeof href)
   const { isSignedIn } = useAuth()
 
   return (
