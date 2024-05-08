@@ -1,5 +1,6 @@
 import { useAuth } from '@clerk/nextjs'
 import Link from 'next/link'
+import UploadComponent from './upload'
 
 interface User {
   href: string
@@ -21,11 +22,7 @@ const Sidebar = ({ href }: User['href']) => {
       </div>
       <div>
         {isSignedIn ? (
-          <Link href={href}>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1">
-              Upload
-            </button>
-          </Link>
+          <UploadComponent />
         ) : (
           <Link href={href}>
             <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1">

@@ -5,7 +5,7 @@ ToDos:
 - [x] Dashboard
 - [x] Authentication
 - [x] Figure out database
+- [x] Uploading pictures
 - [ ] Optimizing image preloading
-- [ ] Uploading pictures
 - [ ] Hide scrollbar between body and sidebar
 - [ ] Testing
