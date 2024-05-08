@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
-import Sidebar from './components/sidebar'
+import Sidebar from './components/Sidebar'
 
 export default function HomePage() {
   const [images, setImages] = useState([])
