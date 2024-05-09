@@ -3,4 +3,6 @@ module default {
     required email: str;
     clerkId: str;
     }
+  type Image {
+    }
 }
