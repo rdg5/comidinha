@@ -8,6 +8,7 @@ ToDos:
 - [x] Uploading pictures
 - [x] Show upload preview
 - [x] Connect image upload to db
+- [x] Deploy to vercel
 - [ ] Optimizing image preloading
 - [ ] Hide scrollbar between body and sidebar
 - [ ] Testing
