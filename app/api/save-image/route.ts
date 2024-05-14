@@ -1,4 +1,4 @@
-import { createClient } from 'edgedb'
+import { createClient, Transaction } from 'edgedb'
 import { NextResponse } from 'next/server'
 
 const client = createClient()
@@ -30,7 +30,7 @@ export const POST = async (request: Request) => {
   }
 
   try {
-    await client.transaction(async (tx: IDBTransaction) => {
+    await client.transaction(async (tx: Transaction) => {
       await tx.querySingle(
         `
         INSERT Photo {
