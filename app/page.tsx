@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/sidebar'
 
 interface ImageUrlsResponse {
   imageUrls: string[]
