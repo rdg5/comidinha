@@ -9,6 +9,7 @@ ToDos:
 - [x] Show upload preview
 - [x] Connect image upload to db
 - [x] Deploy to vercel
+- [ ] Deploy db to edgedb cloud
 - [ ] Optimizing image preloading
 - [ ] Hide scrollbar between body and sidebar
 - [ ] Testing
