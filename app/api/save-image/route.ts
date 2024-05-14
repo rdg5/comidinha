@@ -15,16 +15,12 @@ export const POST = async (request) => {
 
   try {
     await client.transaction(async (tx) => {
-      await tx.query(
+      await tx.querySingle(
         `
-        WITH
-          user_id := (SELECT User FILTER .UserID = <uuid>$0),
-          image_url := <str>$1,
-          current_date := cal::local_date_current()
         INSERT Photo {
-          PhotoURL := image_url,
-          UploadDate := current_date,
-          User := user_id
+          PhotoURL := <str>$1,
+          UploadDate := cal::to_local_date(datetime_current(), 'UTC'),
+          User := (SELECT User FILTER .UserID = <uuid>$0 LIMIT 1)
         };
       `,
         [userId, imageUrl],
