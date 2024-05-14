@@ -7,6 +7,7 @@ ToDos:
 - [x] Figure out database
 - [x] Uploading pictures
 - [x] Show upload preview
+- [ ] Connect image upload to db
 - [ ] Optimizing image preloading
 - [ ] Hide scrollbar between body and sidebar
 - [ ] Testing

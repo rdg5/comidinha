@@ -1,22 +1,41 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useS3Upload } from 'next-s3-upload'
 import { useRouter } from 'next/navigation'
+import { useUser } from '@clerk/nextjs' // Import Clerk's useUser hook
 
 export default function UploadComponent() {
   let [imageUrl, setImageUrl] = useState()
   let [showSuccess, setShowSuccess] = useState(false)
   let { FileInput, openFileDialog, uploadToS3 } = useS3Upload()
   const router = useRouter()
+  const { user } = useUser() // Get the user object from Clerk
 
   let handleFileChange = async (file) => {
     let { url } = await uploadToS3(file)
     setImageUrl(url)
     setShowSuccess(true)
 
+    // Save image URL and user ID to the database
+    await saveImageToDB(url, user.id)
+
     setTimeout(() => {
       setShowSuccess(false)
       router.push('/dashboard')
     }, 6500)
+  }
+
+  let saveImageToDB = async (url, userId) => {
+    const response = await fetch('/api/saveImage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId, imageUrl: url }),
+    })
+
+    if (!response.ok) {
+      console.error('Failed to save image URL to the database')
+    }
   }
 
   return (
