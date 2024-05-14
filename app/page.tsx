@@ -33,7 +33,7 @@ export default function HomePage() {
   }, [])
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         event.preventDefault()
         const { current } = imageContainerRef
@@ -51,7 +51,7 @@ export default function HomePage() {
     }
 
     const handleKeyDownWrapper = (event: Event) =>
-      handleKeyDown(event as KeyboardEvent)
+      handleKeyDown(event as globalThis.KeyboardEvent)
 
     window.addEventListener('keydown', handleKeyDownWrapper)
     return () => {
