@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect, useRef, KeyboardEvent } from 'react'
-import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/sidebar'
 import { useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 
