@@ -1,21 +1,23 @@
-import { useState } from 'react'
+import { useState, ChangeEvent } from 'react'
 import { useS3Upload } from 'next-s3-upload'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 
 export default function UploadComponent() {
-  let [imageUrl, setImageUrl] = useState()
-  let [showSuccess, setShowSuccess] = useState(false)
-  let { FileInput, openFileDialog, uploadToS3 } = useS3Upload()
+  const [imageUrl, setImageUrl] = useState<string | undefined>()
+  const [showSuccess, setShowSuccess] = useState(false)
+  const { FileInput, openFileDialog, uploadToS3 } = useS3Upload()
   const router = useRouter()
   const { user } = useUser()
 
-  let handleFileChange = async (file) => {
-    let { url } = await uploadToS3(file)
+  const handleFileChange = async (file: File) => {
+    const { url } = await uploadToS3(file)
     setImageUrl(url)
     setShowSuccess(true)
 
-    await saveImageToDB(url, user.id)
+    if (user) {
+      await saveImageToDB(url, user.id)
+    }
 
     setTimeout(() => {
       setShowSuccess(false)
@@ -23,7 +25,7 @@ export default function UploadComponent() {
     }, 6500)
   }
 
-  let saveImageToDB = async (url, userId) => {
+  const saveImageToDB = async (url: string, userId: string) => {
     const response = await fetch('/api/save-image', {
       method: 'POST',
       headers: {
@@ -39,7 +41,11 @@ export default function UploadComponent() {
 
   return (
     <div>
-      <FileInput onChange={handleFileChange} />
+      <FileInput
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          handleFileChange(e.target.files![0])
+        }
+      />
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full mt-2 mb-1"
         onClick={openFileDialog}

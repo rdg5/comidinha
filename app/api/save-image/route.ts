@@ -3,8 +3,24 @@ import { NextResponse } from 'next/server'
 
 const client = createClient()
 
-export const POST = async (request) => {
-  const { userId, imageUrl } = await request.json()
+interface RequestBody {
+  userId: string
+  imageUrl: string
+}
+
+export const POST = async (request: Request) => {
+  let requestBody: RequestBody
+
+  try {
+    requestBody = await request.json()
+  } catch (error) {
+    return NextResponse.json(
+      { error: 'Invalid JSON in request body' },
+      { status: 400 },
+    )
+  }
+
+  const { userId, imageUrl } = requestBody
 
   if (!userId || !imageUrl) {
     return NextResponse.json(
@@ -14,7 +30,7 @@ export const POST = async (request) => {
   }
 
   try {
-    await client.transaction(async (tx) => {
+    await client.transaction(async (tx: IDBTransaction) => {
       await tx.querySingle(
         `
         INSERT Photo {
@@ -22,7 +38,7 @@ export const POST = async (request) => {
           UploadDate := cal::to_local_date(datetime_current(), 'UTC'),
           User := (SELECT User FILTER .UserID = <uuid>$0 LIMIT 1)
         };
-      `,
+        `,
         [userId, imageUrl],
       )
     })

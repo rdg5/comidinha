@@ -2,12 +2,11 @@ import { useAuth } from '@clerk/nextjs'
 import Link from 'next/link'
 import UploadComponent from './upload'
 
-interface User {
+interface SidebarProps {
   href: string
 }
 
-const Sidebar = ({ href }: User['href']) => {
-  console.log(typeof href)
+const Sidebar: React.FC<SidebarProps> = ({ href }) => {
   const { isSignedIn } = useAuth()
 
   return (

@@ -34,13 +34,13 @@ export const GET = async () => {
       )
     }
 
-    const uniqueKeys = new Set()
-    const imageUrls = []
+    const uniqueKeys = new Set<string>()
+    const imageUrls: string[] = []
     while (uniqueKeys.size < 5 && uniqueKeys.size < Contents.length) {
       const randomIndex = Math.floor(Math.random() * Contents.length)
       const object = Contents[randomIndex]
 
-      if (!uniqueKeys.has(object.Key)) {
+      if (object.Key && !uniqueKeys.has(object.Key)) {
         uniqueKeys.add(object.Key)
         const imageUrl = s3.getSignedUrl('getObject', {
           Bucket: bucketName,

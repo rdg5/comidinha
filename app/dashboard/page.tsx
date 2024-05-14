@@ -1,12 +1,16 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, KeyboardEvent } from 'react'
 import Sidebar from '../components/Sidebar'
 import { useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 
+interface ImageUrlsResponse {
+  imageUrls: string[]
+}
+
 export default function HomePage() {
-  const [images, setImages] = useState([])
-  const imageContainerRef = useRef(null)
+  const [images, setImages] = useState<string[]>([])
+  const imageContainerRef = useRef<HTMLDivElement>(null)
 
   const { user } = useUser()
   const href = user ? '/dashboard' : '/sign-up'
@@ -15,7 +19,7 @@ export default function HomePage() {
     const fetchImages = async () => {
       try {
         const response = await fetch('/api/get-homepage-images')
-        const data = await response.json()
+        const data: ImageUrlsResponse = await response.json()
         if (data.imageUrls && data.imageUrls.length) {
           setImages(data.imageUrls)
         } else {
@@ -29,7 +33,7 @@ export default function HomePage() {
   }, [])
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         event.preventDefault()
         const { current } = imageContainerRef
@@ -38,7 +42,7 @@ export default function HomePage() {
             current.scrollTop / window.innerHeight,
           )
           const nextIndex = currentIndex + (event.key === 'ArrowDown' ? 1 : -1)
-          const nextElement = current.children[nextIndex]
+          const nextElement = current.children[nextIndex] as HTMLDivElement
           if (nextElement) {
             nextElement.scrollIntoView({ behavior: 'smooth' })
           }
