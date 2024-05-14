@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useRef, KeyboardEvent } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Sidebar from '../components/sidebar'
 import { useUser } from '@clerk/nextjs'
 import Image from 'next/image'
@@ -33,7 +33,7 @@ export default function HomePage() {
   }, [])
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
       if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         event.preventDefault()
         const { current } = imageContainerRef
