@@ -18,6 +18,13 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <script
+            defer
+            src="https://analytics.eu.umami.is/script.js"
+            data-website-id="3c98ac31-28d1-4325-b997-ed93dd88fb53"
+          ></script>
+        </head>
         <body className={inter.className}>{children}</body>
       </html>
     </ClerkProvider>
