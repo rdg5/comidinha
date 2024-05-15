@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
 import Sidebar from './components/sidebar'
+import Image from 'next/image'
 
 interface ImageUrlsResponse {
   imageUrls: string[]
@@ -70,8 +71,10 @@ export default function HomePage() {
             key={index}
             className="h-screen snap-start flex justify-center items-center bg-green-100 p-4 shadow"
           >
-            <img
+            <Image
               src={src}
+              width={100}
+              height={100}
               alt={`Image ${index + 1}`}
               className="w-1/4 max-h-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
             />

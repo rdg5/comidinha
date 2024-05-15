@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom media queries */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    margin: 0;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidebar {
+    display: block;
+    width: 25%;
+  }
+  .main-content {
+    margin-left: 25%;
+    padding: 2rem;
+  }
+}
+
 @layer base {
   body {
     scrollbar-width: none;
