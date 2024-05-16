@@ -15,6 +15,7 @@ ToDos:
 - [ ] Optimizing image preloading
 - [ ] Hide scrollbar between body and sidebar
 - [ ] Testing
+- [ ] Configure secret key and host environment variable on vercel for edgedb
 
 # Comidinha
 
