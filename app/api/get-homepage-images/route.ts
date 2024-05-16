@@ -45,7 +45,7 @@ export const GET = async () => {
         const imageUrl = s3.getSignedUrl('getObject', {
           Bucket: bucketName,
           Key: object.Key,
-          Expires: 60, // URL valid for 60 seconds
+          Expires: 60,
         })
         imageUrls.push(imageUrl)
       }

@@ -9,8 +9,10 @@ ToDos:
 - [x] Show upload preview
 - [x] Connect image upload to db
 - [x] Deploy to vercel
+- [ ] Setup cloudfront cdn
 - [ ] Display different dashboard images than the preloaded ones for logged in users
 - [ ] Optimizing s3 storage handling
+- [ ] Account creation after sign-up
 - [x] Deploy db to edgedb cloud
 - [ ] Optimizing image preloading
 - [ ] Hide scrollbar between body and sidebar

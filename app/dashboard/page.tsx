@@ -73,6 +73,7 @@ export default function HomePage() {
               height={100}
               alt={`Image ${index + 1}`}
               className="w-1/4 max-h-full object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+              placeholder="blur"
             />
           </div>
         ))}
