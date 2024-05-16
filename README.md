@@ -11,7 +11,7 @@ ToDos:
 - [x] Deploy to vercel
 - [ ] Display different dashboard images than the preloaded ones for logged in users
 - [ ] Optimizing s3 storage handling
-- [ ] Deploy db to edgedb cloud
+- [x] Deploy db to edgedb cloud
 - [ ] Optimizing image preloading
 - [ ] Hide scrollbar between body and sidebar
 - [ ] Testing
